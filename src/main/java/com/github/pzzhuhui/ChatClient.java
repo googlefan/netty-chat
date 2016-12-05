@@ -18,7 +18,7 @@ public class ChatClient {
     private final int port;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        new ChatClient("127.0.0.1", 8000).run();
+        new ChatClient("localhost", 8000).run();
     }
 
     public ChatClient(String host, int port) {
@@ -36,7 +36,7 @@ public class ChatClient {
             Channel channel = bootstrap.connect(host, port).sync().channel();
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             while (true) {
-                channel.write(reader.readLine() + "\t\n");
+                channel.writeAndFlush(reader.readLine() + "\t\n");
             }
         } finally {
             group.shutdownGracefully();
